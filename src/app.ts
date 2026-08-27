@@ -1,5 +1,5 @@
 import './styles.css';
-import { calculateTapStats, midiNoteName, parseMidiMessage, supportSummary, type ResultState, type SupportResult } from './music';
+import { calculateTapStats, midiNoteName, parseMidiMessage, readinessStatus, supportCardSvg, supportSummary, type ResultState, type SupportResult } from './music';
 
 type ControlState = 'waiting' | 'passed' | 'skipped';
 
@@ -146,20 +146,18 @@ function updateReadiness(): void {
   const title = byId('readiness-title');
   const copy = byId('readiness-copy');
   const icon = readiness.querySelector<HTMLElement>('.readiness-icon');
-  const essentialsPassed = [state.access, state.input, state.mapping, state.audio].every((value) => value === 'passed');
-  const finished = controls !== 'waiting' && state.timing !== 'waiting';
-  const hasFailure = Object.values(result).some((value) => value === 'failed' || value === 'unsupported');
+  const status = readinessStatus(result);
   const hasStarted = state.access !== 'waiting' || state.audio !== 'waiting';
 
-  readiness.classList.toggle('is-ready', essentialsPassed && finished && !hasFailure);
-  readiness.classList.toggle('is-blocked', hasFailure);
-  if (essentialsPassed && finished && !hasFailure) {
+  readiness.classList.toggle('is-ready', status === 'ready');
+  readiness.classList.toggle('is-blocked', status === 'needs-attention');
+  if (status === 'ready') {
     title.textContent = 'Ready for the lesson';
     copy.textContent = controls === 'skipped' || state.timing === 'skipped'
       ? 'Core notes and sound are ready. Optional hardware or timing was marked unavailable.'
       : 'Input, mapping, controls, sound, and timing all passed in this browser.';
     if (icon) icon.textContent = '✓';
-  } else if (hasFailure) {
+  } else if (status === 'needs-attention') {
     title.textContent = 'One signal needs a fix';
     copy.textContent = 'Open the matching check for the exact next step, then retry it.';
     if (icon) icon.textContent = '!';
@@ -372,18 +370,9 @@ function finishTiming(): void {
   updateReadiness();
 }
 
-function escapeXml(value: string): string {
-  return value.replace(/[<>&"']/g, (character) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;' })[character] ?? character);
-}
-
 function downloadSupportCard(): void {
   const result = cardResult();
-  const summary = supportSummary(result);
-  const lines = summary.split('\n');
-  const ready = [result.access, result.input, result.mapping, result.audio].every((value) => value === 'passed') && result.controls !== 'waiting' && result.timing !== 'waiting';
-  const accent = ready ? '#56f2d2' : '#ffd166';
-  const lineSvg = lines.map((line, index) => `<text x="64" y="${226 + index * 38}" fill="${index === 0 ? '#aab7c9' : '#f4efd8'}" font-size="${index === 0 ? 15 : 19}">${escapeXml(line)}</text>`).join('');
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600"><rect width="900" height="600" fill="#070b17"/><rect x="28" y="28" width="844" height="544" fill="#10172a" stroke="#2b3957" stroke-width="2"/><path d="M28 84h844" stroke="#2b3957"/><g font-family="ui-monospace, monospace"><text x="62" y="64" fill="#aab7c9" font-size="13" letter-spacing="2">MIDI FIRST NOTE / SUPPORT CARD</text><rect x="62" y="112" width="56" height="56" fill="none" stroke="${accent}" stroke-width="3"/><text x="90" y="150" text-anchor="middle" fill="${accent}" font-size="29">${ready ? '✓' : '?'}</text><text x="142" y="137" fill="${accent}" font-size="29" font-weight="700">${ready ? 'LESSON READY' : 'CHECK IN PROGRESS'}</text>${lineSvg}<text x="62" y="550" fill="#56f2d2" font-size="13">LOCAL ONLY • NO DEVICE NAME • NO NOTE HISTORY</text></g></svg>`;
+  const svg = supportCardSvg(result);
   const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml;charset=utf-8' }));
   const link = document.createElement('a');
   link.href = url;

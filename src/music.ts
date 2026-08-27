@@ -66,6 +66,31 @@ export interface SupportResult {
   outputLatencyMs: number | null;
 }
 
+/**
+ * The readiness decision is intentionally shared by the on-screen result and
+ * the exported support card. A completed check is not necessarily a passing
+ * check: failures and unsupported required signals must remain visible in
+ * every representation of the diagnostic.
+ */
+export type ReadinessStatus = 'ready' | 'needs-attention' | 'in-progress';
+
+export function readinessStatus(result: SupportResult): ReadinessStatus {
+  const checks: ResultState[] = [
+    result.access,
+    result.input,
+    result.mapping,
+    result.controls,
+    result.audio,
+    result.timing
+  ];
+  if (checks.some((value) => value === 'failed' || value === 'unsupported')) return 'needs-attention';
+
+  const essentialsPassed = [result.access, result.input, result.mapping, result.audio]
+    .every((value) => value === 'passed');
+  const finished = result.controls !== 'waiting' && result.timing !== 'waiting';
+  return essentialsPassed && finished ? 'ready' : 'in-progress';
+}
+
 export function supportSummary(result: SupportResult): string {
   const label = (value: ResultState) => ({
     waiting: 'not checked',
@@ -88,4 +113,21 @@ export function supportSummary(result: SupportResult): string {
     `Timing: ${timing}`,
     'Privacy: no device name or note history included.'
   ].join('\n');
+}
+
+function escapeXml(value: string): string {
+  return value.replace(/[<>&"']/g, (character) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;' })[character] ?? character);
+}
+
+/** Create the redacted, offline-only support card without exposing MIDI data. */
+export function supportCardSvg(result: SupportResult): string {
+  const status = readinessStatus(result);
+  const summary = supportSummary(result);
+  const lines = summary.split('\n');
+  const accent = status === 'ready' ? '#56f2d2' : status === 'needs-attention' ? '#ff7a90' : '#ffd166';
+  const symbol = status === 'ready' ? '✓' : status === 'needs-attention' ? '!' : '?';
+  const title = status === 'ready' ? 'LESSON READY' : status === 'needs-attention' ? 'NEEDS ATTENTION' : 'CHECK IN PROGRESS';
+  const lineSvg = lines.map((line, index) => `<text x="64" y="${226 + index * 38}" fill="${index === 0 ? '#aab7c9' : '#f4efd8'}" font-size="${index === 0 ? 15 : 19}">${escapeXml(line)}</text>`).join('');
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600"><rect width="900" height="600" fill="#070b17"/><rect x="28" y="28" width="844" height="544" fill="#10172a" stroke="#2b3957" stroke-width="2"/><path d="M28 84h844" stroke="#2b3957"/><g font-family="ui-monospace, monospace"><text x="62" y="64" fill="#aab7c9" font-size="13" letter-spacing="2">MIDI FIRST NOTE / SUPPORT CARD</text><rect x="62" y="112" width="56" height="56" fill="none" stroke="${accent}" stroke-width="3"/><text x="90" y="150" text-anchor="middle" fill="${accent}" font-size="29">${symbol}</text><text x="142" y="137" fill="${accent}" font-size="29" font-weight="700">${title}</text>${lineSvg}<text x="62" y="550" fill="#56f2d2" font-size="13">LOCAL ONLY • NO DEVICE NAME • NO NOTE HISTORY</text></g></svg>`;
 }
