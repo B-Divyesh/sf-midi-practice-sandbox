@@ -1,0 +1,23 @@
+{
+  "routes": [
+    {
+      "route": "/assets/*",
+      "headers": {"Cache-Control": "public, max-age=31536000, immutable"}
+    },
+    {
+      "route": "/fonts/*",
+      "headers": {"Cache-Control": "public, max-age=31536000, immutable"}
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/fonts/*", "/privacy/*", "/terms/*", "/robots.txt", "/sitemap.xml", "/*.{css,js,map,svg,webp,png,woff2,webmanifest}"]
+  },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "no-referrer",
+    "Permissions-Policy": "camera=(), geolocation=(), microphone=()",
+    "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+  },
+  "mimeTypes": {".webmanifest":"application/manifest+json"}
+}

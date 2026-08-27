@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070b17" />
+    <meta name="description" content="Privacy policy for MIDI First Note." />
+    <title>Privacy — MIDI First Note</title>
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="preload" href="/fonts/silkscreen-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to privacy policy</a>
+    <header class="site-header legal-header">
+      <a class="brand" href="/" aria-label="MIDI First Note home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>MIDI FIRST NOTE</span></a>
+      <nav aria-label="Utility"><a href="/">Run the check</a><a href="/terms/">Terms</a></nav>
+    </header>
+    <main class="legal-main" id="main">
+      <p class="eyebrow">LOCAL-FIRST POLICY / 01</p>
+      <h1>Privacy, in plain notes.</h1>
+      <p class="effective">Effective 27 August 2026</p>
+      <article>
+        <p class="callout"><strong>The short version:</strong> MIDI First Note processes keyboard events in your browser. It does not send us device names, played notes, MIDI messages, timing taps, or downloaded support cards.</p>
+        <h2>What the app accesses</h2>
+        <p>If you choose “Connect MIDI keyboard,” your browser asks for MIDI permission. We request ordinary MIDI input only; we do not request system-exclusive (SysEx) access. The app counts available input ports but deliberately does not display, store, or export their names.</p>
+        <h2>What stays on your device</h2>
+        <p>Incoming note and controller messages are used momentarily to update the screen, synthesize a tone, and calculate your tap result. They live only in memory and disappear when the page reloads or closes. The service worker may cache the application shell so the tool can reopen offline, but it does not cache MIDI activity.</p>
+        <h2>Downloads and clipboard</h2>
+        <p>Support-card exports are created locally. They contain only pass/fail states, a count of visible ports, and optional timing measurements. They exclude device names, note history, account identifiers, and network identifiers. You decide whether to save or share them.</p>
+        <h2>Analytics and third parties</h2>
+        <p>There are no analytics, advertising trackers, third-party scripts, cookies, accounts, or cloud storage. Fonts and imagery are served from this site. Your browser and hosting provider may process routine network logs when loading the static files.</p>
+        <h2>Your choices</h2>
+        <p>You can deny MIDI access and still run the sound test. Revoke previously granted access using your browser’s site controls. Clear this site’s storage to remove the offline application cache.</p>
+        <h2>Questions</h2>
+        <p>Open an issue in the <a href="https://github.com/B-Divyesh/sf-midi-practice-sandbox">public source repository</a> without including device identifiers or lesson details.</p>
+      </article>
+    </main>
+    <footer><div class="footer-brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><strong>MIDI FIRST NOTE</strong></div><p>A private pre-lesson MIDI check.</p><nav aria-label="Legal"><a href="/">Home</a><a href="/terms/">Terms</a></nav></footer>
+    <script type="module" src="/src/legal.ts"></script>
+  </body>
+</html>

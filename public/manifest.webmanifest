@@ -1,0 +1,10 @@
+{
+  "name": "MIDI First Note",
+  "short_name": "First Note",
+  "description": "A private, five-minute browser MIDI readiness check.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070b17",
+  "theme_color": "#070b17",
+  "icons": [{"src":"/favicon.svg","sizes":"any","type":"image/svg+xml"}]
+}

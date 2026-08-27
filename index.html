@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070b17" />
+    <meta name="description" content="Check browser MIDI input, note mapping, pedals, pitch bend, sound, and tap timing in five private minutes." />
+    <title>MIDI First Note — Is your keyboard lesson-ready?</title>
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preload" href="/fonts/silkscreen-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to diagnostic</a>
+    <div class="offline-banner" id="offline-banner" role="status" hidden>
+      <span aria-hidden="true">◫</span> You’re offline. The saved diagnostic still works; downloads stay on this device.
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="MIDI First Note home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span>MIDI FIRST NOTE</span>
+      </a>
+      <nav aria-label="Utility">
+        <a href="#how-it-works">How it works</a>
+        <a href="/privacy/">Privacy</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> PRE-LESSON SIGNAL CHECK</p>
+          <h1 id="hero-title">Find the first<br /><span>good note.</span></h1>
+          <p class="lede">Plug in your MIDI keyboard. In five quiet minutes, check input, note names, pedal, pitch bend, sound, and timing—before the lesson starts.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#diagnostic">Run the check <span aria-hidden="true">↓</span></a>
+            <span class="privacy-promise"><span aria-hidden="true">▣</span> No account. Nothing uploaded.</span>
+          </div>
+        </div>
+        <figure class="hero-visual">
+          <div class="figure-frame">
+            <picture>
+              <source srcset="/assets/hero-signal-lab-768.webp 768w, /assets/hero-signal-lab-1280.webp 1280w" type="image/webp" sizes="(max-width: 820px) 100vw, 48vw" />
+              <img src="/assets/hero-signal-lab-768.png" width="768" height="512" alt="Pixel-art MIDI keyboard sending note blocks through a cable to a five-light diagnostic terminal" decoding="async" fetchpriority="high" />
+            </picture>
+            <span class="figure-tag tag-in">MIDI IN</span>
+            <span class="figure-tag tag-test">TEST 01</span>
+          </div>
+          <figcaption>Your keyboard talks directly to this browser. The signal never leaves it.</figcaption>
+        </figure>
+      </section>
+
+      <section class="diagnostic" id="diagnostic" aria-labelledby="diagnostic-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">READINESS CONSOLE</p>
+            <h2 id="diagnostic-title">Five checks. One clear answer.</h2>
+          </div>
+          <p id="browser-support" class="support-badge" role="status">Checking this browser…</p>
+        </div>
+
+        <ol class="progress-rail" aria-label="Diagnostic progress">
+          <li class="is-current" data-progress="access"><span>01</span> Access</li>
+          <li data-progress="input"><span>02</span> Input</li>
+          <li data-progress="mapping"><span>03</span> Mapping</li>
+          <li data-progress="controls"><span>04</span> Controls</li>
+          <li data-progress="audio"><span>05</span> Audio</li>
+        </ol>
+
+        <div class="diagnostic-layout">
+          <div class="test-stack">
+            <article class="test-card is-active" id="access-card" data-check="access">
+              <div class="test-number">01</div>
+              <div class="test-content">
+                <div class="test-title-row">
+                  <div>
+                    <p class="overline">MIDI ACCESS</p>
+                    <h3>Let the browser listen</h3>
+                  </div>
+                  <p class="state-chip state-waiting" id="access-state"><span aria-hidden="true">○</span> Waiting</p>
+                </div>
+                <p>Connect and power on your keyboard, then grant MIDI access. We request input only—never system-exclusive access.</p>
+                <button class="button button-primary" id="connect-midi" type="button">Connect MIDI keyboard</button>
+                <p class="field-note" id="access-detail">Works best in current Chrome, Edge, or Opera on desktop and Android.</p>
+              </div>
+            </article>
+
+            <article class="test-card" id="input-card" data-check="input">
+              <div class="test-number">02</div>
+              <div class="test-content">
+                <div class="test-title-row">
+                  <div>
+                    <p class="overline">INPUT + NOTE</p>
+                    <h3>Play any key</h3>
+                  </div>
+                  <p class="state-chip state-waiting" id="input-state"><span aria-hidden="true">○</span> Waiting</p>
+                </div>
+                <div class="signal-console" aria-live="polite" aria-atomic="true">
+                  <div>
+                    <span class="console-label">LAST NOTE</span>
+                    <strong id="note-name">—</strong>
+                  </div>
+                  <div>
+                    <span class="console-label">MIDI #</span>
+                    <strong id="note-number">—</strong>
+                  </div>
+                  <div>
+                    <span class="console-label">VELOCITY</span>
+                    <strong id="velocity">—</strong>
+                  </div>
+                  <div class="input-lamp-wrap">
+                    <span class="console-label">SIGNAL</span>
+                    <span class="input-lamp" id="input-lamp"><i></i> Idle</span>
+                  </div>
+                </div>
+                <div class="piano" id="piano" aria-label="One-octave note display; the received pitch is highlighted">
+                  <span data-pc="0"><b>C</b></span><span data-pc="2"><b>D</b><i></i></span><span data-pc="4"><b>E</b><i></i></span><span data-pc="5"><b>F</b></span><span data-pc="7"><b>G</b><i></i></span><span data-pc="9"><b>A</b><i></i></span><span data-pc="11"><b>B</b><i></i></span>
+                </div>
+                <p class="field-note" id="input-detail">No notes received yet. Try a key firmly enough to make a sound.</p>
+              </div>
+            </article>
+
+            <article class="test-card" id="mapping-card" data-check="mapping">
+              <div class="test-number">03</div>
+              <div class="test-content">
+                <div class="test-title-row">
+                  <div>
+                    <p class="overline">PITCH MAP</p>
+                    <h3>Find middle C</h3>
+                  </div>
+                  <p class="state-chip state-waiting" id="mapping-state"><span aria-hidden="true">○</span> Waiting</p>
+                </div>
+                <p>Play the C near the center of your keyboard. Most lesson sites expect it to read <strong>C4 · MIDI 60</strong>.</p>
+                <div class="button-row">
+                  <button class="button button-secondary" id="mapping-pass" type="button" disabled>Yes, the label matches</button>
+                  <button class="text-button" id="mapping-fail" type="button" disabled>No, it’s shifted</button>
+                </div>
+                <p class="field-note" id="mapping-detail">Play a note first, then compare its label.</p>
+              </div>
+            </article>
+
+            <article class="test-card" id="controls-card" data-check="controls">
+              <div class="test-number">04</div>
+              <div class="test-content">
+                <div class="test-title-row">
+                  <div>
+                    <p class="overline">CONTROLS</p>
+                    <h3>Move pedal and pitch</h3>
+                  </div>
+                  <p class="state-chip state-waiting" id="controls-state"><span aria-hidden="true">○</span> 0 of 2</p>
+                </div>
+                <div class="control-tests">
+                  <div class="control-test">
+                    <span class="mini-lamp" id="sustain-lamp" aria-hidden="true"></span>
+                    <div><strong>Sustain pedal</strong><small id="sustain-detail">Press and release it once</small></div>
+                    <button class="text-button" id="skip-sustain" type="button">I don’t have one</button>
+                  </div>
+                  <div class="control-test">
+                    <span class="mini-lamp" id="bend-lamp" aria-hidden="true"></span>
+                    <div><strong>Pitch bend</strong><small id="bend-detail">Move the wheel or strip</small></div>
+                    <button class="text-button" id="skip-bend" type="button">Not on my keyboard</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="test-card" id="audio-card" data-check="audio">
+              <div class="test-number">05</div>
+              <div class="test-content">
+                <div class="test-title-row">
+                  <div>
+                    <p class="overline">AUDIO + TIMING</p>
+                    <h3>Hear it, then tap it</h3>
+                  </div>
+                  <p class="state-chip state-waiting" id="audio-state"><span aria-hidden="true">○</span> Waiting</p>
+                </div>
+                <div class="audio-grid">
+                  <div class="subtest">
+                    <span class="subtest-index">A</span>
+                    <h4>Sound unlock</h4>
+                    <p>Play a short A. Then tell us if you heard it.</p>
+                    <div class="button-row">
+                      <button class="button button-secondary" id="play-tone" type="button">Play test tone</button>
+                      <button class="text-button" id="heard-tone" type="button" disabled>I heard it</button>
+                      <button class="text-button" id="no-tone" type="button" disabled>No sound</button>
+                    </div>
+                    <p class="field-note" id="audio-detail">Sound stays muted until you press the button.</p>
+                  </div>
+                  <div class="subtest">
+                    <span class="subtest-index">B</span>
+                    <h4>Tap alignment</h4>
+                    <p>Tap any MIDI key on six pulses. This includes your reaction time; it is a practical check, not a lab latency reading.</p>
+                    <div class="beat-strip" id="beat-strip" aria-live="polite"><i></i><i></i><i></i><i></i><i></i><i></i><span id="timing-readout">Not run</span></div>
+                    <div class="button-row">
+                      <button class="button button-secondary" id="start-timing" type="button" disabled>Start 6-tap check</button>
+                      <button class="text-button" id="skip-timing" type="button">Skip timing</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <aside class="readiness-card" id="readiness-card" aria-labelledby="readiness-title">
+            <div class="card-topline"><span>REDACTED SUPPORT CARD</span><span>LOCAL / 01</span></div>
+            <div class="readiness-status" id="readiness-status">
+              <span class="readiness-icon" aria-hidden="true">?</span>
+              <div><p>CURRENT RESULT</p><h2 id="readiness-title">Not checked yet</h2></div>
+            </div>
+            <p id="readiness-copy">Start with MIDI access. Your result updates after every check.</p>
+            <dl class="result-list">
+              <div><dt>Browser MIDI</dt><dd id="result-access">Not checked</dd></div>
+              <div><dt>Input signal</dt><dd id="result-input">Not checked</dd></div>
+              <div><dt>Pitch mapping</dt><dd id="result-mapping">Not checked</dd></div>
+              <div><dt>Pedal + bend</dt><dd id="result-controls">Not checked</dd></div>
+              <div><dt>Sound</dt><dd id="result-audio">Not checked</dd></div>
+              <div><dt>Tap alignment</dt><dd id="result-timing">Not checked</dd></div>
+            </dl>
+            <div class="privacy-stamp"><span aria-hidden="true">▦</span><p><strong>PRIVACY PASS</strong><br />No device name or note history included.</p></div>
+            <div class="card-actions">
+              <button class="button button-primary" id="download-card" type="button">Download support card</button>
+              <button class="button button-secondary" id="copy-result" type="button">Copy result</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="how-it-works" id="how-it-works" aria-labelledby="how-title">
+        <div>
+          <p class="eyebrow">WHY THIS IS SAFE</p>
+          <h2 id="how-title">A tiny test bench,<br />inside your browser.</h2>
+        </div>
+        <ul>
+          <li><span>01</span><div><h3>Local signal</h3><p>MIDI events and sound are processed on this device. There is no server connection.</p></div></li>
+          <li><span>02</span><div><h3>Temporary by design</h3><p>Reloading clears the session. We do not save device names or your played notes.</p></div></li>
+          <li><span>03</span><div><h3>Useful to a teacher</h3><p>The support card shares pass/fail evidence, never your musical activity or hardware identity.</p></div></li>
+        </ul>
+      </section>
+
+      <section class="troubleshooting" aria-labelledby="trouble-title">
+        <p class="eyebrow">SIGNAL LOST?</p>
+        <h2 id="trouble-title">Fast fixes before class</h2>
+        <details>
+          <summary>No keyboard appears <span aria-hidden="true">+</span></summary>
+          <p>Use Chrome, Edge, or Opera. Connect the keyboard directly, turn it on before granting access, close other music apps that may hold the port, then try again.</p>
+        </details>
+        <details>
+          <summary>Notes are one octave off <span aria-hidden="true">+</span></summary>
+          <p>Check the keyboard’s octave or transpose buttons and return them to zero. Some apps label middle C as C3; the MIDI number 60 is the dependable comparison.</p>
+        </details>
+        <details>
+          <summary>The test tone is silent <span aria-hidden="true">+</span></summary>
+          <p>Press “Play test tone” again, check this tab is not muted, raise system volume, and confirm the intended speakers or headphones are selected.</p>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><strong>MIDI FIRST NOTE</strong></div>
+      <p>Built for the five minutes before the music starts. Hero artwork is original AI-generated imagery.</p>
+      <nav aria-label="Legal"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://github.com/B-Divyesh/sf-midi-practice-sandbox">Source</a></nav>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+    <script type="module" src="/src/app.ts"></script>
+  </body>
+</html>
