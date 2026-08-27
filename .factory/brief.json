@@ -1,0 +1,11 @@
+{
+  "slug": "midi-practice-sandbox",
+  "title": "MIDI First Note",
+  "territory": "games-creative",
+  "user": "Piano teachers and hobbyists using browser exercises who need a five-minute, no-account way to verify that a MIDI keyboard, browser permissions, sound, and note mapping all work before a lesson.",
+  "smallest_useful_product": "A static web app that detects MIDI ports, plays and labels received notes, measures round-trip tap timing, checks sustain and pitch-bend, and exports a redacted support card.",
+  "success_measure": "80% of first-time users obtain a green input-and-audio card in under three minutes; teachers report fewer than one setup interruption per five remote lessons.",
+  "artifact_class": "static-web",
+  "monetization": "free",
+  "constraints": "Request only MIDI access needed for input; never retain device names or played notes unless the user downloads the card; disclose browser/platform limitations."
+}

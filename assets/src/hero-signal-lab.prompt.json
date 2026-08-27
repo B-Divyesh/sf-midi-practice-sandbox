@@ -1,0 +1,10 @@
+{
+  "asset": "hero-signal-lab.png",
+  "generated_at": "2026-08-27",
+  "generator": "/opt/fleet/lib/gen-image.sh",
+  "deployment": "factory-image",
+  "size": "1536x1024",
+  "quality": "high",
+  "prompt": "Use case: stylized-concept. Asset type: responsive landing-page hero illustration. An original pixel-art still life of a small unbranded 25-key MIDI keyboard feeding a compact diagnostic terminal, one glowing key, a clearly visible cable, five tiny unlabeled status lamps, and abstract note blocks moving toward the terminal. Imaginary early-1990s demoscene music workstation on a dark studio bench. Matte charcoal plastic, translucent teal key light, chunky pixels, restrained dithering, crisp hard edges. Orthographic three-quarter view, soft cyan screen glow, deep navy negative space, no photoreal depth of field. Palette: midnight navy, warm ivory keys, phosphor mint, soft violet, tiny amber accents. Landscape 3:2 composition, centered apparatus with breathing room, readable at 360px, no essential detail at outer 8%. No text, no letters, no numbers, no logos, no watermark, no hands, no people, no branded hardware, no music notation, no gradients, no glossy 3D, no neon city, no visual noise.",
+  "review": "Accepted: no text, logos, people, anatomy, seams, or misleading controls; coherent palette and readable keyboard-to-terminal signal path."
+}
