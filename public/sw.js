@@ -1,4 +1,6 @@
-const CACHE = 'midi-first-note-v2';
+// Bump this whenever a release changes hashed shell assets, so an existing
+// install cannot retain a stale bundle during an offline reopen.
+const CACHE = 'midi-first-note-v3';
 const PAGES = ['/', '/privacy/', '/terms/'];
 const STATIC = ['/manifest.webmanifest', '/favicon.svg', '/fonts/silkscreen-latin-400-normal.woff2', '/assets/hero-signal-lab-768.webp'];
 
@@ -31,15 +33,18 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-  event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        if (response.ok && new URL(event.request.url).origin === self.location.origin) {
-          const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put(event.request, copy));
-        }
-        return response;
-      })
-      .catch(() => caches.match(event.request).then((cached) => cached || (event.request.mode === 'navigate' ? caches.match('/') : undefined)))
-  );
+  event.respondWith((async () => {
+    const cached = await caches.match(event.request);
+    if (cached) return cached;
+    try {
+      const response = await fetch(event.request);
+      if (response.ok && new URL(event.request.url).origin === self.location.origin) {
+        const copy = response.clone();
+        caches.open(CACHE).then((cache) => cache.put(event.request, copy));
+      }
+      return response;
+    } catch {
+      return event.request.mode === 'navigate' ? caches.match('/') : undefined;
+    }
+  })());
 });
